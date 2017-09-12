@@ -1,53 +1,79 @@
 <?php
 
 /* @var $this yii\web\View */
+use yii\helpers\Html;
+use yii\widgets\LinkPager;
 
-$this->title = 'My Yii Application';
+$this->title = 'Blog-fantasta';
 ?>
-<div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
+<div id="wrapper">
+    <div class="container">
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        <!--Article blocck-->
+                        <?php foreach ($articles as $article):?>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                        <div class="art-block">
+                            <div class="art-bl-img">
+                                <a href="<?= Yii::$app->urlManager->createUrl(['site/article','id' => $article->id]);?>"><img src="<?= $article->getImage();?>" alt="img1" class="img-responsive" /></a>
+                                <span class="title-on-img animated bounceInLeft">Читать статью</span>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+                            </div>
+                            <div class="art-bl-content">
+                                <span class="cat-link"><a href="<?= Yii::$app->urlManager->createUrl(['site/category','id' => $article->category->id]);?>" class="underline">Творчество <?= $article->category->title;?></a></span>
+                                <h3 class="art-title center"><a href="<?= Yii::$app->urlManager->createUrl(['site/article','id' => $article->id]);?>"><?= $article->title;?></a></h3>
+                                <div class="art-text">
+                                    <?= mb_substr($article->content,0,200).' ...';?>
+                                </div>
+                                <div class="art-info clearfix">
+                                    <span class="art-pubdate" data-toggle="tooltip" data-placement="top" title="Дата публикации">
+                                        <i class="fa fa-calendar-o" aria-hidden="true"></i> <?= $article->getDate();?></span>
+                                    <span class="art-views" data-toggle="tooltip" data-placement="top" title="Просмотров">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> <?= $article->viewed;?></span>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach;?>
+                        <!--End article block-->
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                        <!--Pagination-->
+                        <div class="pagination-block text-center">
+                            <?php
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                                echo LinkPager::widget([
+                                    'pagination' => $pagination,
+                                ]);
+                            ?>
+                        </div>
+
+                        <!--End pagination-->
+
+
+
+
+                    </div><!--End .col-lg-8-->
+                    <!--Aside-->
+                    <?= $this->render('/partials/aside',[
+                        'popular' => $popular,
+                        'categories' => $categories
+                    ]);?>
+                </div>
             </div>
         </div>
-
     </div>
+    <!--Scroll button-->
+    <a class="btn scroll-up"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
 </div>
+
+
+
+
+
+
+
